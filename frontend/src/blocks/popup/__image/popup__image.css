@@ -1,0 +1,9 @@
+.popup__image {
+    object-position: center;
+    object-fit: cover;
+    margin: 0;
+    max-height: 75vh;
+    max-width: 75vw;
+    padding: 0;
+    background: lightgray 50%;
+}

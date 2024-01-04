@@ -1,0 +1,12 @@
+.element__image-button {
+    padding: 0;
+    border: 0;
+    min-height: 282px;
+    max-width: 282px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    list-style-type: none;
+}

@@ -1,0 +1,26 @@
+.profile__add-button {
+    margin-left: auto;
+    min-width: 150px;
+    min-height: 50px;
+    border-radius: 2px;
+    border: 2px;
+    background-color: transparent;
+    background-image: url("../../../images/add-button.svg");
+    background-size: cover;
+    align-self: center;
+    padding: 0;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.profile__add-button:hover {
+    opacity: 0.6;
+}
+
+@media (max-width: 1023px) {
+    .profile__add-button {
+        margin: 0 auto;
+        background-image: url("../../../images/add-button-phone.svg");
+        min-width: 282px;
+    }
+}

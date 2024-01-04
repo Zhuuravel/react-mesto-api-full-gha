@@ -1,0 +1,7 @@
+.element__row {
+    padding: 25px 15px 31px 21px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

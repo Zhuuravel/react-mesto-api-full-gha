@@ -1,0 +1,11 @@
+.popup__description {
+    max-width: 291px;
+    margin: 10px 0 0;
+    color: #FFF;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

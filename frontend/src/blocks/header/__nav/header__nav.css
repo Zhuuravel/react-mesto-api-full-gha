@@ -1,0 +1,8 @@
+.header__nav {
+    display: flex;
+    flex-direction: row;
+    column-gap: 24px;
+    font-size: 18px;
+    line-height: 22px;
+    padding-top: 6px;
+}
