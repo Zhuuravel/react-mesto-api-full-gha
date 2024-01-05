@@ -1,15 +1,15 @@
-
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose').default;
 const { errors } = require('celebrate');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
-const cors = require('./middlewares/cors');
 const { rateLimit } = require('express-rate-limit');
 const helmet = require('helmet');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const cors = require('./middlewares/cors');
 const routes = require('./routes');
 const NotFound = require('./errors/NotFound');
 const errorHandler = require('./middlewares/error-handler');
+
 const app = express();
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -31,7 +31,7 @@ mongoose.connect(MONGO_URL, {
     console.log('MongoDB connected');
   });
 
-  app.use(requestLogger);
+app.use(requestLogger);
 
 app.use(cors);
 
