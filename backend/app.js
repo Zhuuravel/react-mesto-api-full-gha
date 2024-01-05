@@ -16,7 +16,7 @@ const limiter = rateLimit({
   limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
 });
 
-const { PORT = 3000, MONGO_URL =   } = process.env;
+const { PORT, MONGO_URL } = process.env;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
