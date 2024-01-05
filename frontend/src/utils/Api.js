@@ -1,5 +1,5 @@
 const optionsApi = {
-    url: 'http://localhost:3000',
+    url: 'http://api.mesto.zhuuravel.nomoredomainsmonster.ru',
     headers: {
         'authorization': `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': "application/json"

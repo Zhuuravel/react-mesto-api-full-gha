@@ -1,16 +1,15 @@
 // Массив доменов, с которых разрешены кросс-доменные запросы
 const allowedCors = [
-    'https://mestoprojectnotcommertial.nomoredomainsmonster.ru',
-    'http://mestoprojectnotcommertial.nomoredomainsmonster.ru',
-    'https://api.mestoprojectnotcommertial.nomoredomainsmonster.ru',
-    'http:/api.mestoprojectnotcommertial.nomoredomainsmonster.ru',
-    'https://localhost:3001',
-    'http://localhost:3001',
+    'https://mesto.zhuuravel.nomoredomainsmonster.ru',
+    'http://mesto.zhuuravel.nomoredomainsmonster.ru',
+    'https://api.mesto.zhuuravel.nomoredomainsmonster.ru',
+    'http:/api.mesto.zhuuravel.nomoredomainsmonster.ru',
+    'https://localhost:3000',
+    'http://localhost:3000',
   ];
   
   module.exports = (req, res, next) => {
-    const { origin } = req.headers;
-    console.log(origin); // Сохраняем источник запроса в переменную origin
+    const { origin } = req.headers; // Сохраняем источник запроса в переменную origin
     const { method } = req; // Сохраняем тип запроса (HTTP-метод) в соответствующую переменную
     // сохраняем список заголовков исходного запроса
     const requestHeaders = req.headers['access-control-request-headers'];
