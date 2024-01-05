@@ -1,6 +1,6 @@
+const mongoose = require('mongoose');
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose').default;
 const { errors } = require('celebrate');
 const { rateLimit } = require('express-rate-limit');
 const helmet = require('helmet');
@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
 app.use(helmet());
 
-mongoose.connect(MONGO_URL, {
+mongoose.connect(`${MONGO_URL}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
