@@ -1,5 +1,5 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
-require('dotenv').config().default;
 const express = require('express');
 const { errors } = require('celebrate');
 const { rateLimit } = require('express-rate-limit');

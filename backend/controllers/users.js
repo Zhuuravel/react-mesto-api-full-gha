@@ -52,7 +52,6 @@ module.exports.login = (req, res, next) => {
       return res.status(STATUS_OK).send({ token });
     })
     .catch((err) => {
-      res.send(err)
       if (err instanceof ValidationError) {
         next(new BadRequest('Переданы некорректные данные при входе пользователя'));
       } next(err);
