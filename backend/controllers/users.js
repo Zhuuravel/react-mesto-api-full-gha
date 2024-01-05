@@ -44,7 +44,7 @@ module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, NODE_ENV !== 'production' ? JWT_SECRET : 'secret', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
       res.cookie('jwt', token, {
         maxAge: 3600000,
         httpOnly: true,
@@ -52,6 +52,8 @@ module.exports.login = (req, res, next) => {
       return res.status(STATUS_OK).send({ token });
     })
     .catch((err) => {
+      console.log(NODE_ENV);
+      console.log(err);
       if (err instanceof ValidationError) {
         next(new BadRequest('Переданы некорректные данные при входе пользователя'));
       } next(err);
