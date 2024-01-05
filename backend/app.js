@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
 app.use(helmet());
 
-mongoose.connect(`${MONGO_URL}`, {
+mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
