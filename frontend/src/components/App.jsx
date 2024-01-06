@@ -7,7 +7,7 @@ import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
-import {useEffect, useState} from "react";
+import {useEffect, useState, useCallback} from "react";
 import ImagePopup from "./ImagePopup";
 import myApi from "../utils/Api";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
@@ -19,7 +19,7 @@ import * as auth from "../utils/Auth";
 import {usePopupClose} from "../hooks/usePopupClose";
 
 function App() {
-
+const navigate = useNavigate();
 const [isEditAvatarPopupOpen, setAvatarPopupOpen] = useState(false);
 const [isEditProfilePopupOpen, setProfilePopupOpen] = useState(false);
 const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
@@ -31,12 +31,11 @@ const [cards, setCards] = useState([]);
 const [loggedIn, setLoggedIn] = useState(false);
 const [reg, setReg] = useState(false);
 const [userEmail, setUserEmail] = useState("");
-
-const navigate = useNavigate();
+const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
 
     useEffect(() => {
-        if (loggedIn) {
-            Promise.all([myApi.getProfileInfo(), myApi.getAllCards()])
+        if (loggedIn && currentToken) {
+            Promise.all([myApi.getProfileInfo(currentToken), myApi.getAllCards(currentToken)])
                 .then(([userData, cards]) => {
                     // тут установка данных пользователя
                     setCurrentUser(userData);
@@ -44,21 +43,19 @@ const navigate = useNavigate();
                     setCards([...cards])
                 })
                 .catch((err) => {
-                    console.log(err);
+                    console.log('Ошибка при проверке токена');
                 })
         }
-    }, [loggedIn])
+    }, [loggedIn, currentToken])
 
     useEffect(() => {
         handleTokenCheck();
     }, [])
 
     const handleTokenCheck = () => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            auth.checkToken(token)
+        if (currentToken) {
+            auth.checkToken(currentToken)
                 .then((res) => {
-                    console.log(res)
                     if (res) {
                         setUserEmail(res.email);
                         setLoggedIn(true);
@@ -69,8 +66,17 @@ const navigate = useNavigate();
         }
     }
 
+    function handleCardDelete(card) {
+        myApi.deleteCards(card._id, currentToken).then(() => {
+            setCards((state) => state.filter((c) => c._id !== card._id));
+    }).catch((error) => {
+            console.log(error)
+        });
+    }
+
     const signOut = () => {
         localStorage.removeItem("token");
+        setCurrentToken('');
         navigate('/signin', {replace: true});
         setUserEmail("");
     }
@@ -79,10 +85,12 @@ const navigate = useNavigate();
         setLoggedIn(true);
         auth.authorize(password, username)
             .then((data) => {
-                localStorage.setItem("token", data.token);
-                setUserEmail(username);
-                setLoggedIn(true);
-                navigate('/main', {replace: true})
+                // localStorage.setItem("token", data.token);
+                if (data.token) {
+                    setUserEmail(username);
+                    setLoggedIn(true);
+                    navigate('/main', {replace: true})
+                }
             })
             .catch(err => console.log(err));
     }
@@ -137,26 +145,19 @@ const navigate = useNavigate();
 
     function handleCardLike(card) {
         // Снова проверяем, есть ли уже лайк на этой карточке
-        const isLiked = card.likes.some(i => i._id === currentUser._id);
+        const isLiked = card.likes.some(i => i === currentUser._id);
 
         // Отправляем запрос в API и получаем обновлённые данные карточки
-        myApi.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-            setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+        myApi.changeLikeCardStatus(card._id, !isLiked, currentToken).then((newCard) => {
+            setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+            console.log(currentUser)
         }).catch((error) => {
             console.log(error)
         });
     }
 
-    function handleCardDelete(card) {
-        myApi.deleteCards(card._id).then(() => {
-            setCards((state) => state.filter((c) => c._id !== card._id));
-    }).catch((error) => {
-            console.log(error)
-        });
-    }
-
     function handleUpdateUser(onUpdateUser) {
-        myApi.setProfileInfo(onUpdateUser).then((data) => {
+        myApi.setProfileInfo(onUpdateUser, currentToken).then((data) => {
             setCurrentUser(data);
             closeAllPopups();
         }).catch((error) => {
@@ -165,7 +166,7 @@ const navigate = useNavigate();
     }
 
     function handleUpdateAvatar(onUpdateAvatar) {
-        myApi.setProfileAvatar(onUpdateAvatar).then((data) => {
+        myApi.setProfileAvatar(onUpdateAvatar, currentToken).then((data) => {
             setCurrentUser(data);
             closeAllPopups();
         }).catch((error) => {
@@ -174,7 +175,7 @@ const navigate = useNavigate();
     }
 
     function handleAddPlaceSubmit(onAddPlace) {
-        myApi.createCards(onAddPlace)
+        myApi.createCards(onAddPlace, currentToken)
                 .then((newCard) => {
                     // и тут отрисовка карточек
                     setCards([newCard, ...cards]);
@@ -226,9 +227,9 @@ const navigate = useNavigate();
                                                            onEditProfile={handleEditProfileClick}
                                                            onAddPlace={handleAddPlaceClick}
                                                            onCardClick={handleCardClick}
-                                                           cards={cards}
                                                            onCardLike={handleCardLike}
                                                            onCardDelete={handleCardDelete}
+                                                           cards={cards}
                                     />
                             </>
                         }

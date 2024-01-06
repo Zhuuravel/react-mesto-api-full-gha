@@ -37,14 +37,14 @@ function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick, cards, onCa
             </section>
             <section className="elements">
                 <ul className="elements__list">
-                    {cards.reverse().map((card) => {
+                    {cards.map((card) => {
                         return (
                             <Card
                                 card={card}
                                 key={card._id}
                                 onCardClick={onCardClick}
-                                onCardLike={onCardLike}
                                 onCardDelete={onCardDelete}
+                                onCardLike={onCardLike}
                             />
                         )
                     })}
