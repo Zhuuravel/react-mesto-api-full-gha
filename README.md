@@ -7,7 +7,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 158.160.128.242
+IP 158.160.128.242
 
 Frontend https://mesto.zhuuravel.nomoredomainsmonster.ru/
 
