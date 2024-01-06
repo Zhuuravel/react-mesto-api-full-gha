@@ -22,7 +22,7 @@ module.exports.createCard = (req, res, next) => {
   Card.create({ name, link, owner: req.user._id })
     .then((card) => {
       Card.findById(card._id)
-        .populate(['owner'])
+        .populate('owner')
         .then((cards) => res.status(STATUS_CREATED).send(cards));
     })
     .catch((err) => {
@@ -41,7 +41,7 @@ module.exports.deleteCard = (req, res, next) => Card.findById(req.params.cardId)
     } if (!card.owner.equals(userId)) {
       return next(new Forbidden('Попытка удалить чужую карточку!'));
     } Card.deleteOne(card)
-      .then(() => res.status(STATUS_OK).send({card}));
+      .then(() => res.status(STATUS_OK).send(card));
   })
   .catch((err) => {
     if (err instanceof ValidationError) {
@@ -56,7 +56,7 @@ module.exports.likeCard = (req, res, next) => Card.findByIdAndUpdate(
 // eslint-disable-next-line consistent-return
 ).then((card) => {
   if (card) {
-    return res.status(STATUS_OK).send({card});
+    return res.status(STATUS_OK).send(card);
   } next(new NotFound(`Карточка с указанным id: ${req.params.cardId} не найдена`));
 })
   .catch((err) => {
@@ -72,7 +72,7 @@ module.exports.dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
 // eslint-disable-next-line consistent-return
 ).then((card) => {
   if (card) {
-    return res.status(STATUS_OK).send({card});
+    return res.status(STATUS_OK).send(card);
   } next(new NotFound(`Карточка с указанным id: ${req.params.cardId} не найдена`));
 }).catch((err) => {
   if (err instanceof CastError) {
