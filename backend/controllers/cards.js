@@ -18,7 +18,7 @@ module.exports.getCards = (req, res, next) => {
 
 module.exports.createCard = (req, res, next) => {
   const { name, link, owner = req.user._id } = req.body;
-  Card.create({ name, link, owner})
+  Card.create({ name, link, owner })
     .then((card) => {
       Card.findById(card._id)
         .then((cards) => res.status(STATUS_CREATED).send(cards));
@@ -54,7 +54,7 @@ module.exports.likeCard = (req, res, next) => Card.findByIdAndUpdate(
 // eslint-disable-next-line consistent-return
 ).then((card) => {
   if (card) {
-    console.log({card})
+    console.log({ card });
     return res.status(STATUS_OK).send(card);
   } next(new NotFound(`Карточка с указанным id: ${req.params.cardId} не найдена`));
 })
