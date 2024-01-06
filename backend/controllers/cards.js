@@ -57,7 +57,7 @@ module.exports.likeCard = (req, res, next) => Card.findByIdAndUpdate(
 ).then((card) => {
   if (card) {
     console.log(card)
-    return res.status(STATUS_OK).send(card);
+    return res.status(STATUS_OK).send({ data : card });
   } next(new NotFound(`Карточка с указанным id: ${req.params.cardId} не найдена`));
 })
   .catch((err) => {
@@ -73,7 +73,7 @@ module.exports.dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
 // eslint-disable-next-line consistent-return
 ).then((card) => {
   if (card) {
-    return res.status(STATUS_OK).send(card);
+    return res.status(STATUS_OK).send({ data : card });
   } next(new NotFound(`Карточка с указанным id: ${req.params.cardId} не найдена`));
 }).catch((err) => {
   if (err instanceof CastError) {
