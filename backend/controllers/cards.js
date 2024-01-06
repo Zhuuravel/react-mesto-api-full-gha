@@ -56,6 +56,7 @@ module.exports.likeCard = (req, res, next) => Card.findByIdAndUpdate(
 // eslint-disable-next-line consistent-return
 ).then((card) => {
   if (card) {
+    console.log(card)
     return res.status(STATUS_OK).send(card);
   } next(new NotFound(`Карточка с указанным id: ${req.params.cardId} не найдена`));
 })
