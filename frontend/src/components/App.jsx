@@ -150,7 +150,6 @@ const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
         // Отправляем запрос в API и получаем обновлённые данные карточки
         myApi.changeLikeCardStatus(card._id, !isLiked, currentToken).then((newCard) => {
             setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-            console.log(currentUser)
         }).catch((error) => {
             console.log(error)
         });
