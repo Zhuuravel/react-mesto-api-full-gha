@@ -33,9 +33,13 @@ const [reg, setReg] = useState(false);
 const [userEmail, setUserEmail] = useState("");
 const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
 
+useEffect(() => {
+        handleTokenCheck();
+    }, [])
+
     useEffect(() => {
         if (loggedIn && currentToken) {
-            Promise.all([myApi.getProfileInfo(currentToken), myApi.getAllCards(currentToken)])
+            Promise.all([myApi.getProfileInfo(), myApi.getAllCards()])
                 .then(([userData, cards]) => {
                     // тут установка данных пользователя
                     setCurrentUser(userData);
@@ -47,10 +51,6 @@ const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
                 })
         }
     }, [loggedIn, currentToken])
-
-    useEffect(() => {
-        handleTokenCheck();
-    }, [])
 
     const handleTokenCheck = () => {
         if (currentToken) {
@@ -67,7 +67,7 @@ const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
     }
 
     function handleCardDelete(card) {
-        myApi.deleteCards(card._id, currentToken).then(() => {
+        myApi.deleteCards(card._id).then(() => {
             setCards((state) => state.filter((c) => c._id !== card._id));
     }).catch((error) => {
             console.log(error)
@@ -148,7 +148,7 @@ const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
         const isLiked = card.likes.some(i => i === currentUser._id);
 
         // Отправляем запрос в API и получаем обновлённые данные карточки
-        myApi.changeLikeCardStatus(card._id, !isLiked, currentToken).then((newCard) => {
+        myApi.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
             setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
         }).catch((error) => {
             console.log(error)
@@ -156,7 +156,7 @@ const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
     }
 
     function handleUpdateUser(onUpdateUser) {
-        myApi.setProfileInfo(onUpdateUser, currentToken).then((data) => {
+        myApi.setProfileInfo(onUpdateUser).then((data) => {
             setCurrentUser(data);
             closeAllPopups();
         }).catch((error) => {
@@ -165,7 +165,7 @@ const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
     }
 
     function handleUpdateAvatar(onUpdateAvatar) {
-        myApi.setProfileAvatar(onUpdateAvatar, currentToken).then((data) => {
+        myApi.setProfileAvatar(onUpdateAvatar).then((data) => {
             setCurrentUser(data);
             closeAllPopups();
         }).catch((error) => {
@@ -174,7 +174,7 @@ const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
     }
 
     function handleAddPlaceSubmit(onAddPlace) {
-        myApi.createCards(onAddPlace, currentToken)
+        myApi.createCards(onAddPlace)
                 .then((newCard) => {
                     // и тут отрисовка карточек
                     setCards([newCard, ...cards]);

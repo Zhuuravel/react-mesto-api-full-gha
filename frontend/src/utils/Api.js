@@ -1,5 +1,9 @@
 const optionsApi = {
-    url: 'https://api.mesto.zhuuravel.nomoredomainsmonster.ru'
+    url: 'https://api.mesto.zhuuravel.nomoredomainsmonster.ru',
+    headers: {
+        'authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': "application/json",
+    }
 }
 
 class Api {
@@ -19,54 +23,39 @@ class Api {
         return fetch(`${this._url}${url}`, options).then(this._checkResponse)
     }
 
-    getAllCards(token) {
+    getAllCards() {
         return this._request('/cards', {
             method: 'GET',
-            headers: {
-                'authorization': `Bearer ${token}`,
-                'Content-Type': "application/json",
-            },
+            headers: this._headers
         })
     }
 
-    createCards(data, token) {
+    createCards(data) {
         return this._request(`/cards`, {
             method: 'POST',
-            headers: {
-                'authorization': `Bearer ${token}`,
-                'Content-Type': "application/json",
-            },
+            headers: this._headers,
             body: JSON.stringify(data)
         })
     }
 
-    deleteCards(_id, token) {
+    deleteCards(_id) {
         return this._request(`/cards/${_id}`, {
             method: 'DELETE',
-            headers: {
-                'authorization': `Bearer ${token}`,
-                'Content-Type': "application/json",
-            },
+            headers: this._headers
         })
     }
 
-    getProfileInfo(token) {
+    getProfileInfo() {
         return this._request(`/users/me`, {
             method: 'GET',
-            headers: {
-                'authorization': `Bearer ${token}`,
-                'Content-Type': "application/json",
-            },
+            headers: this._headers
         })
     }
 
-    setProfileInfo(data, token) {
+    setProfileInfo(data) {
         return this._request(`/users/me`, {
             method: 'PATCH',
-            headers: {
-                'authorization': `Bearer ${token}`,
-                'Content-Type': "application/json",
-            },
+            headers: this._headers,
             body: JSON.stringify({
                 name: data.name,
                 about: data.about
@@ -74,26 +63,20 @@ class Api {
         })
     }
 
-    setProfileAvatar(data, token) {
+    setProfileAvatar(data) {
         return this._request(`/users/me/avatar`, {
             method: 'PATCH',
-            headers: {
-                'authorization': `Bearer ${token}`,
-                'Content-Type': "application/json",
-            },
+            headers: this._headers,
             body: JSON.stringify({
                 avatar: data.avatar
             })
         })
     }
 
-    changeLikeCardStatus(_id, isLiked, token) {
+    changeLikeCardStatus(_id, isLiked) {
         return this._request(`/cards/${_id}/likes`, {
             method: isLiked? 'PUT' : 'DELETE',
-            headers: {
-                'authorization': `Bearer ${token}`,
-                'Content-Type': "application/json",
-            },
+            headers: this._headers
         })
     }
 }
