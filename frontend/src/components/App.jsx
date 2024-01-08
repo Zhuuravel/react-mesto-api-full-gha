@@ -35,7 +35,7 @@ const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
 
     useEffect(() => {
         if (loggedIn && currentToken) {
-            Promise.all([myApi.getProfileInfo(), myApi.getAllCards()])
+            Promise.all([myApi.getProfileInfo(currentToken), myApi.getAllCards(currentToken)])
                 .then(([userData, cards]) => {
                     // тут установка данных пользователя
                     setCurrentUser(userData);
@@ -67,7 +67,7 @@ const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
     }
 
     function handleCardDelete(card) {
-        myApi.deleteCards(card._id).then(() => {
+        myApi.deleteCards(card._id, currentToken).then(() => {
             setCards((state) => state.filter((c) => c._id !== card._id));
     }).catch((error) => {
             console.log(error)
@@ -149,7 +149,7 @@ const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
         const isLiked = card.likes.some(i => i === currentUser._id);
 
         // Отправляем запрос в API и получаем обновлённые данные карточки
-        myApi.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+        myApi.changeLikeCardStatus(card._id, !isLiked, currentToken).then((newCard) => {
             setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
         }).catch((error) => {
             console.log(error)
@@ -157,7 +157,7 @@ const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
     }
 
     function handleUpdateUser(onUpdateUser) {
-        myApi.setProfileInfo(onUpdateUser).then((data) => {
+        myApi.setProfileInfo(onUpdateUser, currentToken).then((data) => {
             setCurrentUser(data);
             closeAllPopups();
         }).catch((error) => {
@@ -166,7 +166,7 @@ const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
     }
 
     function handleUpdateAvatar(onUpdateAvatar) {
-        myApi.setProfileAvatar(onUpdateAvatar).then((data) => {
+        myApi.setProfileAvatar(onUpdateAvatar, currentToken).then((data) => {
             setCurrentUser(data);
             closeAllPopups();
         }).catch((error) => {
@@ -175,7 +175,7 @@ const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
     }
 
     function handleAddPlaceSubmit(onAddPlace) {
-        myApi.createCards(onAddPlace)
+        myApi.createCards(onAddPlace, currentToken)
                 .then((newCard) => {
                     // и тут отрисовка карточек
                     setCards([newCard, ...cards]);
