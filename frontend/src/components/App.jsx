@@ -33,10 +33,6 @@ const [reg, setReg] = useState(false);
 const [userEmail, setUserEmail] = useState("");
 const [currentToken, setCurrentToken] = useState(localStorage.getItem('token'));
 
-useEffect(() => {
-        handleTokenCheck();
-    }, [])
-
     useEffect(() => {
         if (loggedIn && currentToken) {
             Promise.all([myApi.getProfileInfo(), myApi.getAllCards()])
@@ -51,6 +47,10 @@ useEffect(() => {
                 })
         }
     }, [loggedIn, currentToken])
+
+    useEffect(() => {
+        handleTokenCheck();
+    }, [])
 
     const handleTokenCheck = () => {
         if (currentToken) {
@@ -85,8 +85,9 @@ useEffect(() => {
         setLoggedIn(true);
         auth.authorize(password, username)
             .then((data) => {
-                // localStorage.setItem("token", data.token);
+                console.log(data.token)
                 if (data.token) {
+                    setCurrentToken(data.token)
                     setUserEmail(username);
                     setLoggedIn(true);
                     navigate('/main', {replace: true})
