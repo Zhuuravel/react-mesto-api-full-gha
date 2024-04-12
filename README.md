@@ -14,11 +14,11 @@ Backend https://api.mesto.zhuuravel.nomoredomainsmonster.ru/
 
 ## Инструкции по запуску проекта в локальном репозитории
 
-- Клонировать репозиторий (SSH) на свой компьютер командой git clone git@github.com:Zhuuravel/react-mesto-api-full-gha.git
+- Клонировать репозиторий (SSH) на свой компьютер командой `git clone \git@github.com:Zhuuravel/react-mesto-api-full-gha.git`
 
-- Установить зависимости проекта отдельно в каждой папке backend и frontend командой npm i
+- Установить зависимости проекта отдельно в каждой папке backend и frontend командой `npm i`
 
-- Перейти в папку backend и запустить проект в режиме разработчика командой npm run dev. Другие команды: npm run lint — отлавливает ошибки и следит за единообразием кода; npm run start — запускает сервер
+- Перейти в папку backend и запустить проект в режиме разработчика командой `npm run dev`. Другие команды: `npm run lint` — отлавливает ошибки и следит за единообразием кода; `npm run start` — запускает сервер
 
-- Перейти в папку frontend и запустить проект в режиме разработчика командой npm run start
+- Перейти в папку frontend и запустить проект в режиме разработчика командой `npm run start`
 
