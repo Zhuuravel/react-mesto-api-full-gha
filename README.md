@@ -14,7 +14,7 @@ Backend https://api.mesto.zhuuravel.nomoredomainsmonster.ru/
 
 ## Инструкции по запуску проекта в локальном репозитории
 
-- Клонировать репозиторий (SSH) на свой компьютер командой `git clone \git@github.com:Zhuuravel/react-mesto-api-full-gha.git\`
+- Клонировать репозиторий (SSH) на свой компьютер командой `git clone git@github.com:Zhuuravel/react-mesto-api-full-gha.git`
 
 - Установить зависимости проекта отдельно в каждой папке backend и frontend командой `npm i`
 
